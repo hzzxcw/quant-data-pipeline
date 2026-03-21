@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# Dagster
+.dg/
+.tmp_dagster_home_*/
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Lock files (keep uv.lock at project root)
+**/uv.lock
+
+# Test
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Misc
+*.log
+.env
+.env.local
