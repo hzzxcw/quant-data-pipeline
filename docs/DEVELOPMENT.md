@@ -17,13 +17,13 @@ main (生产分支)
 ### 1. 查看待办 Issues
 
 ```bash
-./.github/scripts/worktree.sh issues
+./scripts/worktree.sh issues
 ```
 
 ### 2. 开始开发 Issue
 
 ```bash
-./.github/scripts/worktree.sh start <issue_number>
+./scripts/worktree.sh start <issue_number>
 ```
 
 脚本会自动：
@@ -34,8 +34,8 @@ main (生产分支)
 ### 3. 切换 Worktree
 
 ```bash
-./.github/scripts/worktree.sh list
-./.github/scripts/worktree.sh switch issue-42-xxx
+./scripts/worktree.sh list
+./scripts/worktree.sh switch issue-42-xxx
 ```
 
 ### 4. 完成开发
@@ -47,7 +47,7 @@ main (生产分支)
 4. 提交代码
 
 ```bash
-../quant-data-pipeline/.github/scripts/worktree.sh done
+../quant-data-pipeline/scripts/worktree.sh done
 ```
 
 脚本会自动推送并创建 PR 到 develop。
@@ -70,7 +70,7 @@ gh pr create --base main --head develop
 ```
 /Users/chenwei/
 ├── quant-data-pipeline/           # 主仓库 (develop)
-│   ├── .github/scripts/worktree.sh
+│   ├── scripts/worktree.sh
 │   └── ...
 └── quant-data-pipeline-feature/  # Feature worktrees
     ├── issue-42-xxx/
@@ -88,8 +88,8 @@ git push origin --delete feature/issue-42-xxx
 
 | 操作 | 命令 |
 |------|------|
-| 查看 issues | `./.github/scripts/worktree.sh issues` |
-| 开始开发 | `./.github/scripts/worktree.sh start 42` |
-| 列出 worktrees | `./.github/scripts/worktree.sh list` |
-| 切换 worktree | `./.github/scripts/worktree.sh switch issue-42-xxx` |
-| 完成开发 | `./.github/scripts/worktree.sh done` |
+| 查看 issues | `./scripts/worktree.sh issues` |
+| 开始开发 | `./scripts/worktree.sh start 42` |
+| 列出 worktrees | `./scripts/worktree.sh list` |
+| 切换 worktree | `./scripts/worktree.sh switch issue-42-xxx` |
+| 完成开发 | `./scripts/worktree.sh done` |

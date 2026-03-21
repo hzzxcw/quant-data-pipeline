@@ -119,7 +119,7 @@ cmd_start() {
     echo "  1. cd $worktree_path"
     echo "  2. Implement the feature"
     echo "  3. Run tests: uv run pytest"
-    echo "  4. When done: ../scripts/worktree.sh done"
+    echo "  4. When done: ../quant-data-pipeline/scripts/worktree.sh done"
 }
 
 # Finish current worktree (commit, push, PR)
