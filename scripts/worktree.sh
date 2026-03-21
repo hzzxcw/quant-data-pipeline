@@ -1,7 +1,8 @@
 #!/bin/bash
 set -e
 
-REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 WORKTREES_BASE="$(dirname "$REPO_DIR")"
 GITHUB_REPO=$(gh repo view --json owner,name --jq '.owner.login + "/" + .name' 2>/dev/null || echo "owner/repo")
 
@@ -85,6 +86,37 @@ cmd_start() {
     echo "  4. Finish: $0 done"
 }
 
+cmd_all() {
+    log_info "Fetching all open issues..."
+    echo ""
+    
+    local issues=$(gh issue list --state open --json number,title --jq '.[] | @base64')
+    
+    if [ -z "$issues" ]; then
+        log_warn "No open issues found"
+        return
+    fi
+    
+    local count=$(echo "$issues" | wc -l | tr -d ' ')
+    log_info "Found $count open issues"
+    echo ""
+    
+    echo "Run the following commands to process all issues in parallel:"
+    echo ""
+    
+    echo "$issues" | while read encoded; do
+        local issue=$(echo "$encoded" | base64 -d)
+        local number=$(echo "$issue" | jq -r '.number')
+        local title=$(echo "$issue" | jq -r '.title')
+        echo "  #${number}: ${title}"
+        echo "    git worktree add -b feature/issue-${number} ../${project_name}-feature/issue-${number} develop"
+        echo ""
+    done
+    
+    echo ""
+    log_info "Tip: Use this skill to spawn parallel subagents for each issue"
+}
+
 cmd_done() {
     local branch_name=$(git branch --show-current)
     
@@ -106,7 +138,7 @@ cmd_done() {
     fi
     
     log_info "Pushing branch..."
-    git push -u origin "$branch_name"
+    git push -u upstream "$branch_name"
     
     local issue_num=$(echo "$branch_name" | grep -oE '[0-9]+' | head -1)
     local pr_title=$(echo "$branch_name" | sed 's/feature\/issue-[0-9]*-//' | tr '-' ' ' | sed 's/.*/\u&/')
@@ -157,6 +189,7 @@ cmd_help() {
     echo "  list                    List all worktrees"
     echo "  issues                  List open GitHub issues"
     echo "  start <issue_number>    Create worktree for issue"
+    echo "  all                     Show all issues (for parallel processing)"
     echo "  done                    Finish worktree (commit, push, PR)"
     echo "  switch <name>           Switch to worktree"
     echo "  help                    Show this help"
@@ -166,6 +199,7 @@ case "${1:-help}" in
     list)   cmd_list ;;
     issues) cmd_issues ;;
     start)  cmd_start "$2" ;;
+    all)    cmd_all ;;
     done)   cmd_done ;;
     switch) cmd_switch "$2" ;;
     help|--help|-h) cmd_help ;;
