@@ -104,14 +104,15 @@ quant-data-pipeline/
 - 批量写入优化
 - 查询性能监控
 
-## 自动化流程
+## 开发流程
 
-### 开发流程
-1. 创建 feature 分支
-2. 在 worktree 中开发
-3. 运行测试和代码审查
-4. 生成文档
-5. 提交 MR 到主干
+详细流程请参考 [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)
+
+### 概述
+1. 查看 GitHub Issues 待办任务
+2. 创建 feature worktree 开始开发
+3. 实现功能、添加测试
+4. Code review 和合并
 
 ### 代码审查
 - 检查代码规范
