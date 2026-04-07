@@ -4,3 +4,6 @@ directory_type = "workspace"
 
 [[workspace.projects]]
 path = "projects/core"
+
+[[workspace.projects]]
+path = "projects/doris-integration"

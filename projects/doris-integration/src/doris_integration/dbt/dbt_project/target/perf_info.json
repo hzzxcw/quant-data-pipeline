@@ -1,0 +1,51 @@
+{
+    "path_count": 125,
+    "parsed_path_count": 125,
+    "static_analysis_path_count": 2,
+    "static_analysis_parsed_path_count": 2,
+    "is_partial_parse_enabled": true,
+    "is_static_analysis_enabled": true,
+    "read_files_elapsed": 0.04048970801522955,
+    "load_macros_elapsed": 0.4646762920310721,
+    "parse_project_elapsed": 0.24899399996502325,
+    "patch_sources_elapsed": 0.014809791988227516,
+    "process_manifest_elapsed": 0.015212540980428457,
+    "load_all_elapsed": 0.8342802079860121,
+    "projects": [
+        {
+            "project_name": "doris_analytics",
+            "elapsed": 0.24225458299042657,
+            "parsers": [
+                {
+                    "parser": "model",
+                    "elapsed": 0.1716133340378292,
+                    "parsed_path_count": 2
+                },
+                {
+                    "parser": "test",
+                    "elapsed": 0.06695941701764241,
+                    "parsed_path_count": 1
+                }
+            ],
+            "parsed_path_count": 3
+        },
+        {
+            "project_name": "dbt_doris",
+            "elapsed": 0.0023599579581059515,
+            "parsers": [],
+            "parsed_path_count": 0
+        },
+        {
+            "project_name": "dbt",
+            "elapsed": 0.004241499991621822,
+            "parsers": [
+                {
+                    "parser": "doc",
+                    "elapsed": 0.0002127499901689589,
+                    "parsed_path_count": 1
+                }
+            ],
+            "parsed_path_count": 1
+        }
+    ]
+}

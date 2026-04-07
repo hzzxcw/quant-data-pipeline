@@ -1,0 +1,11 @@
+doris:
+  target: dev
+  outputs:
+    dev:
+      type: doris
+      host: "{{ env_var('DORIS_HOST', 'localhost') }}"
+      port: 9030
+      schema: "{{ env_var('DORIS_DATABASE', 'quant_data') }}"
+      username: "{{ env_var('DORIS_USER', 'root') }}"
+      password: "{{ env_var('DORIS_PASSWORD', '') }}"
+      threads: 4

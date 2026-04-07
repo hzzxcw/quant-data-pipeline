@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: raw
+    database: "{{ env_var('DORIS_DATABASE', 'quant_data') }}"
+    schema: "{{ env_var('DORIS_DATABASE', 'quant_data') }}"
+    tables:
+      - name: stock_quotes
