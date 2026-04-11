@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: stg_orders
+    description: "清洗后的订单数据"
+    columns:
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        tests:
+          - not_null
+      - name: amount
+        tests:
+          - not_null
+
+  - name: stg_customers
+    description: "客户基础数据"
+    columns:
+      - name: customer_id
+        tests:
+          - unique
+          - not_null
+
+  - name: daily_revenue
+    description: "每日收入汇总"
+    columns:
+      - name: order_date
+        tests:
+          - unique
+          - not_null
+
+  - name: customer_summary
+    description: "客户汇总分析"
+    columns:
+      - name: customer_id
+        tests:
+          - unique
+          - not_null

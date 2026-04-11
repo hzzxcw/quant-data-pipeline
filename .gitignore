@@ -33,6 +33,10 @@ ENV/
 .coverage
 htmlcov/
 
+# dbt
+dbt_project/target/
+dbt_project/dbt_packages/
+
 # Misc
 *.log
 .env

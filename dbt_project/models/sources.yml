@@ -1,0 +1,46 @@
+version: 2
+
+sources:
+  - name: raw
+    description: "原始数据源"
+    tables:
+      - name: orders
+        description: "订单表"
+        columns:
+          - name: order_id
+            description: "订单ID"
+            tests:
+              - unique
+              - not_null
+          - name: customer_id
+            description: "客户ID"
+            tests:
+              - not_null
+          - name: amount
+            description: "订单金额"
+            tests:
+              - not_null
+          - name: status
+            description: "订单状态"
+            tests:
+              - accepted_values:
+                  values: ["pending", "completed", "cancelled"]
+          - name: created_at
+            description: "创建时间"
+            tests:
+              - not_null
+      
+      - name: customers
+        description: "客户表"
+        columns:
+          - name: customer_id
+            description: "客户ID"
+            tests:
+              - unique
+              - not_null
+          - name: name
+            description: "客户姓名"
+          - name: email
+            description: "邮箱"
+          - name: region
+            description: "地区"
