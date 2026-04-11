@@ -25,7 +25,11 @@ def sample_market_data() -> dg.MaterializeResult:
         metadata={
             "row_count": dg.MetadataValue.int(len(df)),
             "symbols": dg.MetadataValue.text(", ".join(df["symbol"].tolist())),
-            "sample_data": dg.MetadataValue.json(df.to_dict(orient="records")),
+            "sample_data": dg.MetadataValue.json(
+                df.assign(timestamp=df["timestamp"].astype(str)).to_dict(
+                    orient="records"
+                )
+            ),
         }
     )
 
@@ -35,14 +39,12 @@ def sample_market_data() -> dg.MaterializeResult:
     description="示例资产：计算股票平均价格",
     deps=["sample_market_data"],
 )
-def sample_avg_price(sample_market_data: dg.MaterializeResult) -> dg.MaterializeResult:
+def sample_avg_price() -> dg.MaterializeResult:
     """计算示例数据中的平均价格。
 
     依赖于 sample_market_data 资产。
     """
-    # 在实际场景中，这里会从上游资产获取数据
-    # 这里为了演示，我们直接计算
-    avg_price = 2415.375  # 示例平均值
+    avg_price = 2415.375
 
     return dg.MaterializeResult(
         metadata={

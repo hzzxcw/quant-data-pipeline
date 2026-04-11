@@ -1,45 +1,45 @@
 import pytest
-from unittest.mock import MagicMock, patch
-
-from core.defs.macro_data import industrial_value_added, _generate_mock_data
+from unittest.mock import MagicMock
+from requests.exceptions import RequestException
 
 
 class TestIndustrialValueAdded:
     """测试工业增加值数据获取 asset。"""
 
-    def test_generate_mock_data(self):
-        """测试模拟数据生成功能。"""
-        context = MagicMock()
+    def test_asset_is_defined(self):
+        """Test that asset is properly defined."""
+        from core.defs.industrial_value_added import industrial_value_added
 
-        result = _generate_mock_data(context)
+        assert industrial_value_added is not None
 
-        assert result is not None
-        assert "row_count" in result.metadata
-        assert result.metadata["row_count"].value == 2
-        assert result.metadata["data_type"].value == "mock_data"
-        assert "sample" in result.metadata
+    def test_api_failure_raises_exception(self, monkeypatch):
+        """测试 API 请求失败时抛出异常。"""
+        import dagster as dg
+        from core.defs.industrial_value_added import industrial_value_added
 
-    def test_mock_data_structure(self):
-        """测试模拟数据的结构。"""
-        context = MagicMock()
+        def mock_get(*args, **kwargs):
+            raise RequestException("Connection failed")
 
-        result = _generate_mock_data(context)
-        sample = result.metadata["sample"].value
+        monkeypatch.setattr("requests.get", mock_get)
 
-        assert len(sample) == 2
-        assert "indicator" in sample[0]
-        assert "period" in sample[0]
-        assert "value" in sample[0]
+        context = dg.build_asset_context()
+        with pytest.raises(RequestException, match="Connection failed"):
+            industrial_value_added(context)
 
-    def test_mock_data_generation_logic(self):
-        """测试模拟数据生成逻辑返回正确的结构。"""
-        context = MagicMock()
-        result = _generate_mock_data(context)
+    def test_api_timeout_raises_exception(self, monkeypatch):
+        """测试 API 请求超时时抛出异常。"""
+        import dagster as dg
+        from core.defs.industrial_value_added import industrial_value_added
+        import requests
 
-        metadata = result.metadata
-        assert metadata["row_count"].value == 2
-        assert metadata["data_type"].value == "mock_data"
-        assert metadata["latest_period"].value == "202602"
+        def mock_get(*args, **kwargs):
+            raise requests.Timeout("Request timed out")
+
+        monkeypatch.setattr("requests.get", mock_get)
+
+        context = dg.build_asset_context()
+        with pytest.raises(requests.Timeout, match="Request timed out"):
+            industrial_value_added(context)
 
 
 if __name__ == "__main__":

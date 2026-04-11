@@ -1,46 +1,45 @@
 import pytest
 from unittest.mock import MagicMock
-
-from core.defs.retail_sales import retail_sales, _generate_mock_data
+from requests.exceptions import RequestException
 
 
 class TestRetailSales:
     """测试社会消费品零售总额数据获取 asset。"""
 
-    def test_generate_mock_data(self):
-        """测试模拟数据生成功能。"""
-        context = MagicMock()
+    def test_asset_is_defined(self):
+        """Test that asset is properly defined."""
+        from core.defs.retail_sales import retail_sales
 
-        result = _generate_mock_data(context)
+        assert retail_sales is not None
 
-        assert result is not None
-        assert "row_count" in result.metadata
-        assert result.metadata["row_count"].value == 3
-        assert result.metadata["data_type"].value == "mock_data"
-        assert "sample" in result.metadata
+    def test_api_failure_raises_exception(self, monkeypatch):
+        """测试 API 请求失败时抛出异常。"""
+        import dagster as dg
+        from core.defs.retail_sales import retail_sales
 
-    def test_mock_data_structure(self):
-        """测试模拟数据的结构。"""
-        context = MagicMock()
+        def mock_get(*args, **kwargs):
+            raise RequestException("Connection failed")
 
-        result = _generate_mock_data(context)
-        sample = result.metadata["sample"].value
+        monkeypatch.setattr("requests.get", mock_get)
 
-        assert len(sample) == 3
-        assert "indicator" in sample[0]
-        assert "period" in sample[0]
-        assert "value" in sample[0]
+        context = dg.build_asset_context()
+        with pytest.raises(RequestException, match="Connection failed"):
+            retail_sales(context)
 
-    def test_mock_data_content(self):
-        """测试模拟数据的内容。"""
-        context = MagicMock()
+    def test_api_timeout_raises_exception(self, monkeypatch):
+        """测试 API 请求超时时抛出异常。"""
+        import dagster as dg
+        from core.defs.retail_sales import retail_sales
+        import requests
 
-        result = _generate_mock_data(context)
-        sample = result.metadata["sample"].value
+        def mock_get(*args, **kwargs):
+            raise requests.Timeout("Request timed out")
 
-        indicators = [s["indicator"] for s in sample]
-        assert "零售总额当月同比" in indicators
-        assert "餐饮收入当月同比" in indicators
+        monkeypatch.setattr("requests.get", mock_get)
+
+        context = dg.build_asset_context()
+        with pytest.raises(requests.Timeout, match="Request timed out"):
+            retail_sales(context)
 
 
 if __name__ == "__main__":

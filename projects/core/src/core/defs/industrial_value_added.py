@@ -32,10 +32,15 @@ def industrial_value_added(context: dg.AssetExecutionContext) -> dg.MaterializeR
     }
 
     import requests
+    from requests.exceptions import RequestException
 
-    response = requests.get(url, params=params, timeout=30)
-    response.raise_for_status()
-    data = response.json()
+    try:
+        response = requests.get(url, params=params, timeout=30)
+        response.raise_for_status()
+        data = response.json()
+    except RequestException as e:
+        context.log.error(f"API request failed: {e}")
+        raise
 
     if data.get("returncode") != 0:
         raise RuntimeError(f"API returned error code: {data.get('returncode')}")

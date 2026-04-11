@@ -23,6 +23,10 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 force-include = { "pyproject.toml" = "pyproject.toml" }
 
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
+
 [tool.dg]
 directory_type = "project"
 
