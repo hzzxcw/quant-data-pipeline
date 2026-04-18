@@ -41,6 +41,22 @@ quant-data-pipeline/
 | 部署配置 | `deployments/local/` | Docker Compose |
 | 开发规范 | `AGENTS.md` (本文件) + `~/.config/opencode/AGENTS.md` (全局) | |
 
+## DEVELOPMENT WORKFLOW
+
+每次实现功能或修复 bug，必须按以下流程执行，**不得跳过任何步骤**：
+
+1. **实现** → 写代码 + 写测试
+2. **验证** → `uv run pytest` 全部通过 + LSP 诊断无误
+3. **Review** → 实现完成后，必须对变更文件做 code review（模式一致性、异常处理、测试覆盖、安全），审查通过才能标记完成
+4. **提交** → 仅在用户明确要求时才 git commit
+
+Review 重点检查项：
+- 异常处理：不吞异常（bare `except` 必须 `raise`），用具体异常类型
+- 类型安全：无 `as any` / `type: ignore`，运行时类型校验（`int()` 等）
+- 模式一致：与现有 Resource / Asset / Test 模式对齐
+- 测试覆盖：关键路径有测试，断言有意义（非空 assert）
+- 安全：无硬编码凭证，SQL 参数化
+
 ## CONVENTIONS
 
 - `import dagster as dg` 统一别名
