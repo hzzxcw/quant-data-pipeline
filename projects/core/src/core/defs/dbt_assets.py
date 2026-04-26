@@ -47,7 +47,13 @@ def quant_dbt_assets(context: dg.AssetExecutionContext, dbt: DbtCliResource):
 
 daily_dbt_job = dg.define_asset_job(
     name="daily_dbt_models",
-    selection=dg.AssetSelection.all(),
+    selection=dg.AssetSelection.all() - dg.AssetSelection.assets(
+        "futures_daily_quotes",
+        "futures_daily_summary",
+        "futures_auto_quotes",
+        "futures_smart_quotes",
+        "futures_delayed_quotes",
+    ),
 )
 
 daily_schedule = dg.ScheduleDefinition(
