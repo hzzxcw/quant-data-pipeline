@@ -119,6 +119,61 @@ opencode
 
 ---
 
+## 离线安装（无网络环境）
+
+适用于服务器无法直接访问互联网的场景。
+
+### 第一步：本地有网机器上准备
+
+```bash
+# 1. 克隆仓库
+git clone https://github.com/code-yeongyu/oh-my-openagent.git
+cd oh-my-openagent
+
+# 2. 安装依赖
+bun install  # 或 npm install
+
+# 3. 打包整个项目
+tar czf oh-my-openagent.tar.gz .
+```
+
+### 第二步：传输到服务器
+
+```bash
+scp oh-my-openagent.tar.gz user@server:~/
+```
+
+### 第三步：服务器上安装
+
+```bash
+# 1. 解压
+mkdir -p ~/oh-my-openagent && cd ~/oh-my-openagent
+tar xzf ~/oh-my-openagent.tar.gz
+
+# 2. 运行本地安装
+cd ~/oh-my-openagent && bunx . install --no-tui --claude=max20 --openai=yes
+```
+
+### 备选方案
+
+如果 `bunx .` 不识别，直接用 node 执行：
+
+```bash
+node ~/oh-my-openagent/src/cli.js install --no-tui --claude=max20 --openai=yes
+```
+
+### 离线安装 OpenCode 本体
+
+```bash
+# 有网机器上下载
+npm pack opencode-ai
+
+# 传输后离线安装
+npm install --offline ./opencode-ai-*.tar.gz
+```
+
+---
+
 ## 代理模型配置
 
 每个代理有独立的模型链路。安装后可在配置文件中自定义：
