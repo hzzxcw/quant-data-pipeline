@@ -1,0 +1,3 @@
+[submodule "projects/dbt_project"]
+	path = projects/dbt_project
+	url = https://github.com/hzzxcw/quant-dbt.git
